@@ -60,17 +60,27 @@ def restaurant_create(request):
     if request.method == "POST":
         form = RestaurantForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('restaurant-list')
+            form.save(commit=False)
+            restaurant.owner= request.owner
+            restaurant.save()
+            return redirect('restaurant-detail')
     context = {
         "form":form,
     }
     return render(request, 'create.html', context)
 
 def item_create(request):
+    item = ItemForm()
+    if request.method == "POST":
+        item = ItemForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save(commit=False)
+            item.restaurant= request.restaurant.id
+            item.save()
+            return redirect('restaurant-detail')
 
     context = {
-        
+        "item": item,
     }
     return render(request, 'item_create.html', context)
 
